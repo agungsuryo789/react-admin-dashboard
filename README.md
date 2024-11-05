@@ -30,6 +30,8 @@ To start the development server, run:
   ```bash
   npm start
   ```
+This will start the app at http://localhost:3000
+
 For a production build, use:
 
   ```bash

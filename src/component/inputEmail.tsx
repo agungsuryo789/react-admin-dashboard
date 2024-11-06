@@ -10,8 +10,8 @@ const InputEmail: React.FC<InputEmailProps> = ({ val, onChange }) => {
       <img src={email} alt="" className="mr-2 w-8" />
       <input
         className="bg-white w-full focus:outline-none"
-        type="email"
-        placeholder="email"
+        type="text"
+        placeholder="username"
 		value={val}
 		onChange={onChange}
       />

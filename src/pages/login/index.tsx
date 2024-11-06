@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state";
 
@@ -8,21 +8,44 @@ import InputPassword from "../../component/inputPw";
 import InputEmail from "../../component/inputEmail";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("emilys");
+  const [password, setPassword] = useState<string>("emilyspass");
   const [user, setUser] = useRecoilState(userState);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (email === "" || password === "") return;
 
-    const newUserState = { isAuth: true, email: email };
+    setLoading(true);
+    try {
+      const res: any = await fetch("https://dummyjson.com/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: email,
+          password: password,
+        }),
+      });
 
-    setUser(newUserState);
-    localStorage.setItem("userState", JSON.stringify(newUserState));
-
-    navigate("/dashboard");
+      if (!res.ok) {
+        throw new Error("Invalid credentials");
+      }
+      const data = await res.json();
+      const newUserState = {
+        isAuth: true,
+        email: data.email,
+        accessToken: data.accessToken,
+      };
+      setUser(newUserState);
+      localStorage.setItem("userState", JSON.stringify(newUserState));
+      setLoading(false);
+      navigate("/dashboard");
+    } catch (error: unknown) {
+      alert(error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,7 +55,7 @@ const Login = () => {
         <p className="my-2 tracking-wide">
           Lorem ipsum dolor, sit amet consectetur adipisicing elit.
         </p>
-        <ButtonBlue title="Read More" link="#" />
+        <ButtonBlue title="Read More" />
       </div>
       <div className="justify-items-center content-center lg:col-span-2 xl:col-span-2 bg-white p-4 w-full h-svh text-black text-left">
         <h3 className="font-bold text-4xl">Hello Again{"!"}</h3>
@@ -45,7 +68,11 @@ const Login = () => {
           />
         </div>
         <div className="flex flex-col">
-          <ButtonBlue title="Login" link="#" onClick={handleLogin} />
+          <ButtonBlue
+            title="Login"
+            onClick={handleLogin}
+            disabled={isLoading}
+          />
           <button className="hover:bg-slate-300 my-2 p-2 rounded-xl w-80 hover:text-white">
             forgot password
           </button>

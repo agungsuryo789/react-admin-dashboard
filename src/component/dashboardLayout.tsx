@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../state";
 import { useNavigate } from "react-router-dom";
 
@@ -14,10 +14,10 @@ interface DashboardLayoutProp {
 const DashboardLayout: React.FC<DashboardLayoutProp> = ({ children }) => {
   const navigate = useNavigate();
   const [isSidebar, setSidebar] = useState(false);
-  const setUser = useSetRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
 
   const handleLogout = () => {
-    setUser({ isAuth: false, email: "" });
+    setUser({ isAuth: false, email: "", accessToken: '' });
     localStorage.removeItem("userState");
     navigate("/");
   };
@@ -66,7 +66,7 @@ const DashboardLayout: React.FC<DashboardLayoutProp> = ({ children }) => {
                 alt="Avatar"
                 className="m-auto mr-2 rounded-xl w-8"
               />
-              <span className="m-auto">John@email.com</span>
+              <span className="m-auto">{user.email}</span>
             </div>
           </nav>
 

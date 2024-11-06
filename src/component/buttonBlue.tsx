@@ -1,20 +1,24 @@
-import { Link } from "react-router-dom";
 interface ButtonBlueProps {
   title: string;
-  link: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-const ButtonBlue: React.FC<ButtonBlueProps> = ({ title, link, onClick }) => {
+const ButtonBlue: React.FC<ButtonBlueProps> = ({
+  title,
+  onClick,
+  disabled,
+}) => {
   return (
-    <Link to={link}>
-      <button
-        className="bg-blue-500 hover:bg-blue-600 my-2 p-2 rounded-2xl w-80 text-white"
-        onClick={onClick}
-      >
-        {title}
-      </button>
-    </Link>
+    <button
+      className={` hover:bg-blue-600 my-2 p-2 rounded-2xl w-80 text-white ${
+        disabled ? "bg-gray-400" : "bg-blue-500"
+      }`}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {title}
+    </button>
   );
 };
 

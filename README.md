@@ -1,6 +1,13 @@
 # React Admin Dashboard
 
-Admin Dashboard build with React JS and vite.
+## Link Demo -> https://react-admin-dashboard-zeta-one.vercel.app/
+
+Admin Dashboard build with React JS for Mauju Frontend test.
+This project using:
+- Recoil for state management
+- TailwindCSS for UI
+- Typescript
+- Vite for bundler
 
 ## Table of Contents
 

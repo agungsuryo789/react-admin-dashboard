@@ -1,10 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 
-createRoot(document.getElementById('root')!).render(
+import router from "./route";
+import "./index.css";
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <RecoilRoot>
+      <RouterProvider router={router} />
+    </RecoilRoot>
+  </StrictMode>
+);

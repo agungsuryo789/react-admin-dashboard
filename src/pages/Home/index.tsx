@@ -1,9 +1,16 @@
-import React from 'react'
+import DashboardLayout from "../../component/dashboardLayout";
+import Table from "../../component/table";
 
 const Home = () => {
   return (
-	<div>index</div>
-  )
-}
+    <>
+      <DashboardLayout>
+        <div className="content-center p-4">
+          <Table />
+        </div>
+      </DashboardLayout>
+    </>
+  );
+};
 
-export default Home
+export default Home;

@@ -11,14 +11,37 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  const handleRegister = () => {
+  /* function to handle register action */
+  const handleRegister = async () => {
     if (email === "" || password === "" || name === "") return;
 
-    navigate("/");
+	setLoading(true)
+
+    try {
+      const res: any = await fetch("https://dummyjson.com/users/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: name,
+          email: email,
+          password: password,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Invalid request");
+      }
+	  setLoading(false)
+	  navigate('/')
+    } catch (error) {
+      console.log(error);
+    }
   };
+  
   return (
     <Fragment>
       <div className="grid grid-cols-1 lg:grid-cols-5 xl:grid-cols-5">
@@ -27,7 +50,7 @@ const Register = () => {
           <p className="my-2 tracking-wide">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit.
           </p>
-          <ButtonBlue title="Read More" link="#" />
+          <ButtonBlue title="Read More" />
         </div>
         <div className="justify-items-center content-center lg:col-span-2 xl:col-span-2 bg-white p-4 w-full h-svh text-black text-left">
           <h3 className="font-bold text-4xl">Hello{"!"}</h3>
@@ -44,11 +67,14 @@ const Register = () => {
             />
           </div>
           <div className="flex flex-col">
-            <ButtonBlue title="Register" link="#" onClick={handleRegister} />
+            <ButtonBlue title="Register" onClick={handleRegister} disabled={isLoading} />
           </div>
-		  <div>
-			Already have an account? <Link to='/' className="text-blue-500">Sign In here</Link>
-		  </div>
+          <div>
+            Already have an account?{" "}
+            <Link to="/" className="text-blue-500">
+              Sign In here
+            </Link>
+          </div>
         </div>
       </div>
     </Fragment>

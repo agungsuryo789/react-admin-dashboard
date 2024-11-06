@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userState } from "../../state";
 
 import ButtonBlue from "../../component/buttonBlue";
@@ -10,11 +10,12 @@ import InputEmail from "../../component/inputEmail";
 const Login = () => {
   const [email, setEmail] = useState<string>("emilys");
   const [password, setPassword] = useState<string>("emilyspass");
-  const [user, setUser] = useRecoilState(userState);
+  const setUser = useSetRecoilState(userState); /* setter action for the user state */
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
+  /* function to handle login action */
   const handleLogin = async () => {
     if (email === "" || password === "") return;
 

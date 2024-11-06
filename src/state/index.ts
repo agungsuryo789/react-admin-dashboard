@@ -6,7 +6,7 @@ interface User {
   accessToken: string
 }
 
-// Function to persist state in localStorage
+// Function to persist state in localStorage so that it stay login after page reload
 const persistState = <T>(key: string, defaultValue: T): T => {
   const savedState = localStorage.getItem(key);
   if (savedState) {

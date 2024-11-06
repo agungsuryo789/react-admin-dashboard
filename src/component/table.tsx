@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+import search from "../assets/search.svg";
+import edit from "../assets/edit.svg";
+import del from "../assets/delete.svg";
 
 interface RowData {
   id: number;
@@ -11,11 +15,21 @@ interface RowData {
 const Table: React.FC = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [data, setData] = useState<RowData[]>([
-    { id: 1, item: "item lorem", price: 1230, date: "31/02/2024", status: 0 },
-    { id: 2, item: "item lorem", price: 1230, date: "31/02/2024", status: 0 },
-    { id: 3, item: "item lorem", price: 1230, date: "31/02/2024", status: 0 },
-  ]);
+  const [dataTemp, setDataTemp] = useState<RowData[]>([]);
+  const [data, setData] = useState<RowData[]>([]);
+
+  useEffect(() => {
+    setData([
+      { id: 1, item: "aaa", price: 1230, date: "31/02/2024", status: 0 },
+      { id: 2, item: "bbb", price: 1230, date: "31/02/2024", status: 0 },
+      { id: 3, item: "cccc", price: 1230, date: "31/02/2024", status: 0 },
+    ]);
+    setDataTemp([
+      { id: 1, item: "aaa", price: 1230, date: "31/02/2024", status: 0 },
+      { id: 2, item: "bbb", price: 1230, date: "31/02/2024", status: 0 },
+      { id: 3, item: "cccc", price: 1230, date: "31/02/2024", status: 0 },
+    ]);
+  }, []);
 
   const toggleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -34,6 +48,24 @@ const Table: React.FC = () => {
     );
   };
 
+  const handleSearch = (input: string) => {
+    if (input === "") {
+      setData(dataTemp);
+    } else {
+      const newFilteredData = data.filter((row) =>
+        row.item.toLowerCase().includes(input.toLowerCase())
+      );
+
+      setData(newFilteredData);
+    }
+  };
+
+  const handleDeleteRow = (id: number) => {
+    const newFilteredData = data.filter((row) => row.id !== id);
+
+    setData(newFilteredData);
+  };
+
   return (
     <div className="overflow-x-auto">
       <div className="flex flex-row border-2 w-full h-12">
@@ -41,8 +73,9 @@ const Table: React.FC = () => {
           type="text"
           placeholder="Search"
           className="bg-white p-2 w-full text-black focus:outline-none"
+          onChange={(e) => handleSearch(e.target.value)}
         />
-        <img src="" alt="search" className="my-auto w-8" />
+        <img src={search} alt="search" className="mx-2 my-auto w-5" />
       </div>
       <table className="border-collapse border-gray-200 border min-w-full table-auto">
         <thead>
@@ -76,11 +109,25 @@ const Table: React.FC = () => {
               <td className="p-2 border-b">{row.item}</td>
               <td className="p-2 border-b">{row.price}</td>
               <td className="p-2 border-b">{row.date}</td>
-              <td className="p-2 border-b">{row.status}</td>
+              <td className="p-2 border-b">
+                <span className="border-2 bg-gray-200 px-3 py-1 rounded-2xl text-sm text-white">
+                  {row.status === 0 ? "Not Done" : "Done"}
+                </span>
+              </td>
               <td className="flex flex-row p-2 border-b">
-                <button className="border-2 mx-1 p-2 rounded-full">edit</button>
-                <button className="border-2 mx-1 p-2 rounded-full">
-                  delete
+                <button>
+                  <img
+                    src={edit}
+                    alt=""
+                    className="hover:bg-gray-300 mx-1 p-2 hover:rounded-full w-8 hover:cursor-pointer"
+                  />
+                </button>
+                <button onClick={() => handleDeleteRow(row.id)}>
+                  <img
+                    src={del}
+                    alt=""
+                    className="hover:bg-gray-300 mx-1 p-2 hover:rounded-full w-8 hover:cursor-pointer"
+                  />
                 </button>
               </td>
             </tr>

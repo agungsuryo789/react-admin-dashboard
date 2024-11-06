@@ -14,15 +14,14 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  // Persist the user state to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("userState", JSON.stringify(user));
-  }, [user]);
-
   const handleLogin = () => {
     if (email === "" || password === "") return;
 
-    setUser({ isAuth: true, email: email });
+    const newUserState = { isAuth: true, email: email };
+
+    setUser(newUserState);
+    localStorage.setItem("userState", JSON.stringify(newUserState));
+
     navigate("/dashboard");
   };
 

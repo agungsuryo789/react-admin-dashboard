@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import ButtonBlue from "../../component/buttonBlue";
 import InputPassword from "../../component/inputPw";
@@ -45,6 +46,9 @@ const Register = () => {
           <div className="flex flex-col">
             <ButtonBlue title="Register" link="#" onClick={handleRegister} />
           </div>
+		  <div>
+			Already have an account? <Link to='/' className="text-blue-500">Sign In here</Link>
+		  </div>
         </div>
       </div>
     </Fragment>
